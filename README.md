@@ -1,4 +1,3 @@
-
 # FoodView
 
 FoodView is a split backend + mobile frontend project for discovering food corners, browsing meals, posting customer reviews, and helping vendors manage their listings with review-driven analytics.

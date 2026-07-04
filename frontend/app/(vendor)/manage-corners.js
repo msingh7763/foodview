@@ -4,6 +4,7 @@ import { useAuth } from '../../context';
 import { useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import SmartImage from '../../components/SmartImage';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function ManageCorners() {
   const { token, apiUrl } = useAuth();
@@ -38,6 +39,20 @@ export default function ManageCorners() {
       setLoading(false);
     }
   }
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.5,
+      base64: true,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const asset = result.assets[0];
+      setImage(`data:${asset.mimeType || 'image/jpeg'};base64,${asset.base64}`);
+    }
+  };
 
   async function handleSaveCorner() {
     if (!name || !location || !description) {
@@ -165,14 +180,18 @@ export default function ManageCorners() {
             multiline
           />
 
-          <Text style={styles.label}>Image URL (Optional)</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="https://example.com/image.jpg"
-            placeholderTextColor="#5C5B7A"
-            value={image}
-            onChangeText={setImage}
-          />
+
+          <TouchableOpacity style={styles.pickImageBtn} onPress={pickImage}>
+            <Text style={styles.pickImageBtnText}>
+              Pick Image from Gallery
+            </Text>
+          </TouchableOpacity>
+
+          {image.trim() ? (
+            <View style={styles.imagePreviewCard}>
+              <SmartImage uri={image} style={styles.imagePreview} />
+            </View>
+          ) : null}
 
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.submitBtn} onPress={handleSaveCorner} disabled={submitting}>
@@ -296,9 +315,43 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     fontSize: 15
   },
+  imagePreviewCard: {
+    marginTop: 12,
+    backgroundColor: '#0D0C1D',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#24234C',
+    overflow: 'hidden'
+  },
+  imagePreviewLabel: {
+    color: '#8A89A6',
+    fontSize: 12,
+    fontWeight: '600',
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    paddingBottom: 8
+  },
+  imagePreview: {
+    width: '100%',
+    height: 180
+  },
   btnRow: {
     flexDirection: 'row',
     marginTop: 20
+  },
+  pickImageBtn: {
+    backgroundColor: '#24234C',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#393863',
+  },
+  pickImageBtnText: {
+    color: '#E0E0E0',
+    fontSize: 14,
+    fontWeight: '500',
   },
   submitBtn: {
     backgroundColor: '#FF3E6C',

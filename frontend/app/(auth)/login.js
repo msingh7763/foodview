@@ -8,8 +8,8 @@ export default function LoginScreen() {
   const { login } = useAuth();
   const router = useRouter();
 
-  const [email, setEmail] = useState('customer@foodcorner.com');
-  const [password, setPassword] = useState('Customer@123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleLogin() {
@@ -41,11 +41,6 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.formContainer}>
-          <View style={styles.demoBox}>
-            <Text style={styles.demoTitle}>Demo login</Text>
-            <Text style={styles.demoText}>Customer: customer@foodcorner.com / Customer@123</Text>
-            <Text style={styles.demoText}>Vendor: vendor@foodcorner.com / Vendor@123</Text>
-          </View>
 
           <Text style={styles.label}>Email Address</Text>
           <View style={styles.inputWrapper}>

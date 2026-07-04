@@ -103,7 +103,7 @@ export default function FoodCornerDetail() {
                   <Text style={styles.mealName}>{meal.name}</Text>
                   <Text style={styles.mealDesc} numberOfLines={2}>{meal.description}</Text>
                   <View style={styles.mealMetaRow}>
-                    <Text style={styles.mealPrice}>${meal.price.toFixed(2)}</Text>
+                    <Text style={styles.mealPrice}>₹{meal.price.toFixed(2)}</Text>
                     <View style={styles.ratingRow}>
                       <Ionicons name="star" size={14} color="#FFD700" style={{ marginRight: 4 }} />
                       <Text style={styles.ratingText}>{meal.averageRating || 'New'}</Text>

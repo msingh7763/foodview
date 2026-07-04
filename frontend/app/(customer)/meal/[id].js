@@ -158,7 +158,7 @@ export default function MealDetail() {
         <View style={styles.detailsContainer}>
           <View style={styles.titleRow}>
             <Text style={styles.name}>{meal.name}</Text>
-            <Text style={styles.price}>${meal.price.toFixed(2)}</Text>
+            <Text style={styles.price}>₹{meal.price.toFixed(2)}</Text>
           </View>
 
           <View style={styles.ratingRow}>

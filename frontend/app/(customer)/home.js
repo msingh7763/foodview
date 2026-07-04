@@ -169,7 +169,7 @@ export default function CustomerHome() {
                     <View style={styles.dishInfo}>
                       <Text style={styles.dishName} numberOfLines={1}>{item.name}</Text>
                       <View style={styles.dishPriceRow}>
-                        <Text style={styles.dishPrice}>${item.price.toFixed(2)}</Text>
+                        <Text style={styles.dishPrice}>₹{item.price.toFixed(2)}</Text>
                         <View style={styles.ratingBadge}>
                           <Ionicons name="star" size={10} color="#FFD700" style={{ marginRight: 2 }} />
                           <Text style={styles.ratingVal}>{item.averageRating || 'New'}</Text>
