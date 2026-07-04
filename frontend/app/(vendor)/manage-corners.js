@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { useAuth } from '../../context';
 import { useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
+import SmartImage from '../../components/SmartImage';
 
 export default function ManageCorners() {
   const { token, apiUrl } = useAuth();
@@ -211,10 +212,7 @@ export default function ManageCorners() {
         ) : (
           corners.map(corner => (
             <View key={corner._id} style={styles.cornerCard}>
-              <Image
-                source={{ uri: corner.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400' }}
-                style={styles.cornerImage}
-              />
+              <SmartImage uri={corner.image} style={styles.cornerImage} />
               <View style={styles.cornerDetails}>
                 <Text style={styles.cornerName}>{corner.name}</Text>
                 <Text style={styles.cornerLocation}>{corner.location}</Text>
@@ -359,7 +357,8 @@ const styles = StyleSheet.create({
   },
   cornerImage: {
     width: 90,
-    height: '100%'
+    height: 100,
+    alignSelf: 'stretch'
   },
   cornerDetails: {
     flex: 1,

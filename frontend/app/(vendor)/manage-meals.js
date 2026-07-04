@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { useAuth } from '../../context';
 import { useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
+import SmartImage from '../../components/SmartImage';
 
 export default function ManageMeals() {
   const { token, apiUrl } = useAuth();
@@ -261,10 +262,7 @@ export default function ManageMeals() {
         ) : (
           meals.map(meal => (
             <View key={meal._id} style={styles.mealCard}>
-              <Image
-                source={{ uri: meal.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400' }}
-                style={styles.mealImage}
-              />
+              <SmartImage uri={meal.image} style={styles.mealImage} />
               <View style={styles.mealDetails}>
                 <View>
                   <Text style={styles.mealName}>{meal.name}</Text>
@@ -466,7 +464,8 @@ const styles = StyleSheet.create({
   },
   mealImage: {
     width: 90,
-    height: '100%'
+    height: 100,
+    alignSelf: 'stretch'
   },
   mealDetails: {
     flex: 1,

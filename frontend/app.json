@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0D0C1D"
-      }
+      },
+      "package": "com.msingh7763.foodcornerapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -26,6 +27,12 @@
     "plugins": [
       "expo-router"
     ],
-    "scheme": "foodcorner"
+    "scheme": "foodcorner",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e16ad818-d0be-4b8b-9ca7-39d9fa098bfc"
+      }
+    }
   }
 }

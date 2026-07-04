@@ -1,13 +1,33 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useSegments } from 'expo-router';
+import Constants from 'expo-constants';
 
-const TUNNEL_API_URL = 'https://cents-cigarette-proportion-spa.trycloudflare.com/api';
-const LAN_API_URL = 'http://192.168.0.105:5001/api';
-const LOCAL_API_URL = 'http://localhost:5001/api';
-const API_URL = process.env.EXPO_PUBLIC_API_URL || TUNNEL_API_URL;
+// Dynamically resolve the backend host from the Expo dev server.
+// On a physical device or emulator, Constants.expoConfig.hostUri contains
+// the LAN IP that Expo is running on (e.g. "192.168.x.x:8081").
+// We strip the port and attach our backend port instead.
+function getDynamicApiUrl() {
+  try {
+    const hostUri = Constants.expoConfig?.hostUri || Constants.manifest?.debuggerHost;
+    if (hostUri) {
+      const host = hostUri.split(':')[0]; // grab just the IP
+      return `http://${host}:5001/api`;
+    }
+  } catch (_) {}
+  return null;
+}
+
+const DYNAMIC_API_URL = getDynamicApiUrl();
+const LOCAL_API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:5001/api' : 'http://localhost:5001/api';
+const API_URL = process.env.EXPO_PUBLIC_API_URL || DYNAMIC_API_URL || LOCAL_API_URL;
 const WEB_API_URL = process.env.EXPO_PUBLIC_WEB_API_URL || LOCAL_API_URL;
-const API_CANDIDATES = [API_URL, TUNNEL_API_URL, LAN_API_URL, WEB_API_URL].filter((value, index, list) => list.indexOf(value) === index);
+
+// Build candidate list: dynamic IP first, then env override, then localhost for web
+const API_CANDIDATES = [DYNAMIC_API_URL, API_URL, WEB_API_URL]
+  .filter(Boolean)
+  .filter((value, index, list) => list.indexOf(value) === index);
 
 const AuthContext = createContext({
   user: null,
@@ -30,7 +50,7 @@ export function AuthProvider({ children }) {
   const router = useRouter();
   const segments = useSegments();
 
-  const [currentApiUrl, setCurrentApiUrl] = useState(API_URL);
+  const [currentApiUrl, setCurrentApiUrl] = useState(DYNAMIC_API_URL || API_URL);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

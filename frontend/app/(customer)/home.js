@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { useAuth } from '../../context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import SmartImage from '../../components/SmartImage';
 
 export default function CustomerHome() {
   const { token, apiUrl, logout } = useAuth();
@@ -32,7 +33,9 @@ export default function CustomerHome() {
       });
       const mealsData = await resMeals.json();
 
-      if (Array.isArray(cornersData)) setFoodCorners(cornersData);
+      if (Array.isArray(cornersData)) {
+        setFoodCorners(cornersData.filter(fc => fc.name.toLowerCase() !== 'gordon grill house'));
+      }
       if (Array.isArray(mealsData)) setPopularMeals(mealsData);
     } catch (e) {
       console.error(e);
@@ -104,10 +107,7 @@ export default function CustomerHome() {
                     style={styles.featuredCard}
                     onPress={() => router.push(`/(customer)/corner/${item._id}`)}
                   >
-                    <Image
-                      source={{ uri: item.image || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500' }}
-                      style={styles.featuredImage}
-                    />
+                    <SmartImage uri={item.image} style={styles.featuredImage} />
                     <View style={styles.featuredInfo}>
                       <Text style={styles.featuredName} numberOfLines={1}>{item.name}</Text>
                       <View style={styles.locationRow}>
@@ -133,10 +133,7 @@ export default function CustomerHome() {
                   style={styles.cornerCard}
                   onPress={() => router.push(`/(customer)/corner/${item._id}`)}
                 >
-                  <Image
-                    source={{ uri: item.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500' }}
-                    style={styles.cornerImage}
-                  />
+                  <SmartImage uri={item.image} style={styles.cornerImage} />
                   <View style={styles.cornerDetails}>
                     <Text style={styles.cornerName}>{item.name}</Text>
                     <Text style={styles.cornerDesc} numberOfLines={2}>{item.description}</Text>
@@ -168,10 +165,7 @@ export default function CustomerHome() {
                     style={styles.dishCard}
                     onPress={() => router.push(`/(customer)/meal/${item._id}`)}
                   >
-                    <Image
-                      source={{ uri: item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500' }}
-                      style={styles.dishImage}
-                    />
+                    <SmartImage uri={item.image} style={styles.dishImage} />
                     <View style={styles.dishInfo}>
                       <Text style={styles.dishName} numberOfLines={1}>{item.name}</Text>
                       <View style={styles.dishPriceRow}>
@@ -331,7 +325,8 @@ const styles = StyleSheet.create({
   },
   cornerImage: {
     width: 100,
-    height: '100%'
+    height: 110,
+    alignSelf: 'stretch'
   },
   cornerDetails: {
     flex: 1,

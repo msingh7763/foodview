@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useAuth } from '../../../context';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import SmartImage from '../../../components/SmartImage';
+
 
 export default function FoodCornerDetail() {
   const { id } = useLocalSearchParams();
@@ -63,10 +65,7 @@ export default function FoodCornerDetail() {
   return (
     <View style={styles.container}>
       {/* Banner / Cover Image */}
-      <Image
-        source={{ uri: corner.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800' }}
-        style={styles.bannerImage}
-      />
+      <SmartImage uri={corner.image} style={styles.bannerImage} />
 
       {/* Floating Back Action */}
       <TouchableOpacity style={styles.headerBackBtn} onPress={() => router.back()}>
@@ -99,10 +98,7 @@ export default function FoodCornerDetail() {
                 style={styles.mealCard}
                 onPress={() => router.push(`/(customer)/meal/${meal._id}`)}
               >
-                <Image
-                  source={{ uri: meal.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400' }}
-                  style={styles.mealImage}
-                />
+                <SmartImage uri={meal.image} style={styles.mealImage} />
                 <View style={styles.mealDetails}>
                   <Text style={styles.mealName}>{meal.name}</Text>
                   <Text style={styles.mealDesc} numberOfLines={2}>{meal.description}</Text>
@@ -236,7 +232,8 @@ const styles = StyleSheet.create({
   },
   mealImage: {
     width: 100,
-    height: '100%'
+    height: 110,
+    alignSelf: 'stretch'
   },
   mealDetails: {
     flex: 1,

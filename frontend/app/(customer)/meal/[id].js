@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useAuth } from '../../../context';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import SmartImage from '../../../components/SmartImage';
 
 export default function MealDetail() {
   const { id } = useLocalSearchParams();
@@ -146,10 +147,7 @@ export default function MealDetail() {
   return (
     <View style={styles.container}>
       {/* Banner / Cover Image */}
-      <Image
-        source={{ uri: meal.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800' }}
-        style={styles.bannerImage}
-      />
+      <SmartImage uri={meal.image} style={styles.bannerImage} />
 
       {/* Floating Back Action */}
       <TouchableOpacity style={styles.headerBackBtn} onPress={() => router.back()}>
