@@ -50,10 +50,10 @@ async function runTests() {
     console.log('\nTesting Create Meal...');
     const mealRes = await axios.post(`${API_URL}/meals`, {
       foodCornerId: cornerId,
-      name: 'Signature Beef Wellington',
+      name: 'SiWellington',
       price: 49.99,
-      description: 'Tender beef fillet wrapped in puff pastry with mushroom duxelles.',
-      image: 'https://images.unsplash.com/photo-1544025162-d76694265947'
+      description: 'wrapped in puff pastry with mushroom duxelles.',
+      image: 'https://www.ficsi.in/blog/wp-content/uploads/2025/05/Blog-2.jpg'
     }, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
